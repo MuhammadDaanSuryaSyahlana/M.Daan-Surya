@@ -1,0 +1,91 @@
+.model small
+.code
+org 100h
+start:
+         jmp mulai
+lanjut       db 13,10,'Next Tekan y : $'
+
+masukkan  db 13,10,'Silahkan Masukkan No Bahan Kaos yang Anda pilih: $'
+      
+
+daftar db 13,10,'|=================================|'
+       db 13,10,'|          Pembelian Kaos         |'
+       db 13,10,'+=================================+'
+       db 13,10,'|NO| Nama Bahan | Harga 1pcs      |'
+       db 13,10,'+=================================+'
+       db 13,10,'|1 | Bahan 30s  | 1pcs RP.60.000  |'
+       db 13,10,'+=================================+'
+       db 13,10,'|2 | Bahan 24s  | 1pcs RP.70.000  |'
+       db 13,10,'+=================================+','$'
+
+
+
+
+    mulai:        
+     mov ah,09h
+	 mov dx,offset daftar
+	 int 21h
+	 mov ah,09h
+	 mov dx,offset lanjut
+	 int 21h
+	 mov ah,01h
+	 int 21h
+	 cmp al,'y'
+	 jmp proses
+	 jne error_msg
+
+
+
+error_msg:
+        mov ah,09h
+        mov dx,offset error_msg
+        int 21h
+        int 20h
+
+proses:
+        mov ah,09h
+        mov dx,offset masukkan
+        int 21h
+
+        mov ah,01
+        int 21h
+        mov bh,al
+       
+       
+        cmp al,'1'
+        je hasil1
+
+        
+        cmp al,'2'
+        je hasil2
+
+        
+hasil1:
+	mov ah,09h
+	lea dx,teks1
+	int 21h
+	int 20h
+
+hasil2:
+	mov ah,09h
+	lea dx,teks2
+	int 21h
+	int 20h
+
+
+       
+;================================================================
+
+teks1  db 13,10,' '  
+       db 13,10,'|=================================================|'
+       db 13,10,'      |Jenis kaos yang anda ambil Bahan 30s|         '
+       db 13,10,'Total Harga Yang Harus Anda Bayar 1pcs : RP.60.000'  
+       db 13,10,'|=================================================|' 
+       db 13,10,'Terima Kasih $'
+
+teks2  db 13,10,' '  
+       db 13,10,'|=================================================|'
+       db 13,10,'      |Jenis kaos yang anda ambil Bahan 24s|        '
+       db 13,10,'Total Harga Yang Harus Anda Bayar 1pcs : RP.70.000'  
+       db 13,10,'|=================================================|' 
+       db 13,10,'Terima Kasih $'
